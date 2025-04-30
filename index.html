@@ -13,4 +13,25 @@
         card.innerHTML = `
           <h3>${item["Source Name"]}</h3>
           <p>${item["Summary"]}</p>
+          <a href="${item["URL"]}" target="_blank">🔗 Read More</a>
+          <p class="timestamp">${item["Timestamp"]}</p>
+        `;
+        feedContainer.appendChild(card);
+      });
+    } catch (err) {
+      feedContainer.innerHTML = "<p>⚠️ Error loading feed.</p>";
+      console.error(err);
+    }
+  }
 
+  fetchFeed();
+
+  document.getElementById("searchInput").addEventListener("input", function(e) {
+    const keyword = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      card.style.display = text.includes(keyword) ? "block" : "none";
+    });
+  });
+</script>
