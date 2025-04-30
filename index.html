@@ -13,16 +13,4 @@
         card.innerHTML = `
           <h3>${item["Source Name"]}</h3>
           <p>${item["Summary"]}</p>
-          <a href="${item["URL"]}" target="_blank">🔗 Read More</a>
-          <p class="timestamp">${item["Timestamp"]}</p>
-        `;
-        feedContainer.appendChild(card);
-      });
-    } catch (err) {
-      feedContainer.innerHTML = "<p>⚠️ Error loading feed.</p>";
-      console.error(err);
-    }
-  }
 
-  fetchFeed();
-</script>
