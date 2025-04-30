@@ -1,53 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BlackSignal – Intelligence Feed</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>🛰️ BlackSignal</h1>
-    <p class="tagline">Your Digital Bunker for Unfiltered Intelligence</p>
-  </header>
+<script>
+  const FEED_URL = "https://opensheet.elk.sh/1phTETapGGRdh8JF_RVxFP355n42qOib_vtsD6qxQLOI/Sheet1";
 
-  <main>
-    <input type="text" id="searchInput" placeholder="Search keywords (e.g. BRICS, AI, sky grid)..." />
-    <div id="feed">
-      <p>Loading feed...</p>
-    </div>
-  </main>
-
-  <footer>
-    <p>Operated anonymously. Built for those with eyes to see.</p>
-  </footer>
-
-  <script>
-    async function fetchFeed() {
-      const feedContainer = document.getElementById("feed");
-      try {
-        const res = await fetch("https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME", {
-          headers: {
-            Authorization: "Bearer YOUR_API_KEY"
-          }
-        });
-        const data = await res.json();
-        feedContainer.innerHTML = "";
-        data.records.forEach(record => {
-          const entry = document.createElement("div");
-          entry.className = "card";
-          entry.innerHTML = `<h3>${record.fields["Source Name"]}</h3>
-                             <p>${record.fields.Summary}</p>
-                             <a href="${record.fields.URL}" target="_blank">Read More</a>`;
-          feedContainer.appendChild(entry);
-        });
-      } catch (err) {
-        feedContainer.innerHTML = "<p>Error loading data.</p>";
-      }
+  async function fetchFeed() {
+    const feedContainer = document.getElementById("feed");
+    try {
+      const res = await fetch(FEED_URL);
+      const data = await res.json();
+      feedContainer.innerHTML = "";
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${item["Source Name"]}</h3>
+          <p>${item["Summary"]}</p>
+          <a href="${item["URL"]}" target="_blank">🔗 Read More</a>
+          <p class="timestamp">${item["Timestamp"]}</p>
+        `;
+        feedContainer.appendChild(card);
+      });
+    } catch (err) {
+      feedContainer.innerHTML = "<p>⚠️ Error loading feed.</p>";
+      console.error(err);
     }
+  }
 
-    fetchFeed();
-  </script>
-</body>
-</html>
+  fetchFeed();
+</script>
